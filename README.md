@@ -1,2 +1,42 @@
-# Sonic-2048
-Computational Sound Final Project
+Aliya Tang Siying Ding
+
+# Implementation Checklist: Sonic 2048
+
+## Phase 1: Core Infrastructure (The Foundation)
+* [ ] **Game Logic Integration**: Set up standard 2048 grid logic (4x4).
+* [ ] **Event Dispatcher**: Create a system where the game "broadcasts" events (e.g., `MOVE_START`, `TILE_MERGE`, `GAME_OVER`).
+* [ ] **State Tracking (The "History" Array)**: 
+    * Create a global `gameHistory` array.
+    * Push an object for every move: `{moveDirection, tileValues, mergedValue, timestamp}`.
+* [ ] **WebAudio Boilerplate**: Initialize `AudioContext` and a Master Output chain with a `DynamicsCompressorNode` to prevent clipping during simultaneous merges.
+
+## Phase 2: The Synthesis Engine (DSP & Class Concepts)
+* [ ] **FM Synthesis Module (Primary Class Concept)**:
+    * Build a Carrier and Modulator oscillator pair.
+    * Map Tile Value to **Modulation Index** (higher tiles = more harmonic complexity).
+    * Map Tile Value to **Carrier Frequency** (assigning notes from a specific scale).
+* [ ] **Sound Board Factory**: 
+    * Implement a secondary **Subtractive Synthesis** mode (Sawtooth waves + Filters).
+    * Create a toggle to hot-swap between FM and Subtractive engines in real-time.
+* [ ] **Envelope Control**: Use `GainNodes` with `exponentialRampToValueAtTime` to create smooth "pops" for merges and avoid audio clicks.
+
+## Phase 3: The "Topic Not Covered" (WaveShaper & Scheduling)
+* [ ] **WaveShaperNode Implementation**:
+    * Design a distortion curve to add "grit" and character to specific sound boards.
+    * Use this to differentiate the "texture" of high-value tiles.
+* [ ] **The Look-Ahead Scheduler**:
+    * Implement a scheduling loop (the "Chris Wilson" method) using `setInterval` to check the `gameHistory`.
+    * Use `AudioContext.currentTime` to schedule notes with sample-accurate precision for the final score playback.
+
+## Phase 4: Automated Composition (The Final Score)
+* [ ] **The Mapping Logic**:
+    * Assign move directions to musical intervals (e.g., Up/Down = Pitch shifts, Left/Right = Rhythmic variations).
+    * Map merge values to volume and duration.
+* [ ] **The "Recap" UI**:
+    * Create a playback mode that triggers at the end of the game.
+    * Ensure the visual grid or UI "pulses" in sync with the audio playback using the scheduler.
+
+## Phase 5: Quality & Rubrics (The Grade)
+* [ ] **Modular Code**: Ensure audio logic is encapsulated in its own class or module to avoid "spaghetti code."
+* [ ] **Commenting**: Document the specific "Game Theory" heuristics (like Monotonicity or Smoothness) used to control audio parameters.
+* [ ] **Final Polish**: Check that the transition between "Game Mode" and "Playback Mode" is seamless.
