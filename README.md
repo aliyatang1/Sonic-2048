@@ -1,5 +1,3 @@
-Aliya Tang Siying Ding
-
 # Implementation Checklist: Sonic 2048
 
 ## Phase 1: Core Infrastructure (The Foundation)

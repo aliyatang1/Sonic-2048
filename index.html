@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sonic 2048</title>
+    <link rel="stylesheet" href="./src/ui.css">
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <h1>Sonic 2048</h1>
+        <div class="controls">
+          <button id="newGame">New Game</button>
+          <button id="toggleAudio">Toggle Audio</button>
+          <div class="score">Score: <span id="score">0</span></div>
+        </div>
+      </header>
+
+      <main>
+        <div id="grid" class="grid"></div>
+      </main>
+    </div>
+
+    <script type="module" src="./src/ui.js"></script>
+  </body>
+</html>
