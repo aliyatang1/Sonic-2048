@@ -6,10 +6,18 @@ const { dispatcher, game, audio } = app;
 const gridEl = document.getElementById('grid');
 const scoreEl = document.getElementById('score');
 const newBtn = document.getElementById('newGame');
+const toggleSynthBtn = document.getElementById('toggleSynth');
 const toggleAudioBtn = document.getElementById('toggleAudio');
 
 let audioEnabled = !!audio;
-if (!audioEnabled) toggleAudioBtn.textContent = 'Audio Unavailable';
+if (!audioEnabled) {
+  toggleAudioBtn.textContent = 'Audio Unavailable';
+  toggleSynthBtn.textContent = 'Synth Unavailable';
+  toggleAudioBtn.disabled = true;
+  toggleSynthBtn.disabled = true;
+} else {
+  toggleSynthBtn.textContent = `Synth: ${audio.getEngine().toUpperCase()}`;
+}
 
 function createGrid() {
   gridEl.innerHTML = '';
@@ -78,6 +86,13 @@ toggleAudioBtn.addEventListener('click', () => {
   audioEnabled = !audioEnabled;
   toggleAudioBtn.textContent = audioEnabled ? 'Audio: On' : 'Audio: Off';
   if (audioEnabled && audio.resume) audio.resume();
+});
+
+toggleSynthBtn.addEventListener('click', () => {
+  if (!audio) return;
+  const mode = audio.toggleEngine();
+  toggleSynthBtn.textContent = `Synth: ${mode.toUpperCase()}`;
+  if (audio.resume) audio.resume();
 });
 
 // subscribe to game events

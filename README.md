@@ -9,14 +9,14 @@
 * [ ] **WebAudio Boilerplate**: Initialize `AudioContext` and a Master Output chain with a `DynamicsCompressorNode` to prevent clipping during simultaneous merges.
 
 ## Phase 2: The Synthesis Engine (DSP & Class Concepts)
-* [ ] **FM Synthesis Module (Primary Class Concept)**:
+* [x] **FM Synthesis Module (Primary Class Concept)**:
     * Build a Carrier and Modulator oscillator pair.
     * Map Tile Value to **Modulation Index** (higher tiles = more harmonic complexity).
     * Map Tile Value to **Carrier Frequency** (assigning notes from a specific scale).
-* [ ] **Sound Board Factory**: 
+* [x] **Sound Board Factory**: 
     * Implement a secondary **Subtractive Synthesis** mode (Sawtooth waves + Filters).
     * Create a toggle to hot-swap between FM and Subtractive engines in real-time.
-* [ ] **Envelope Control**: Use `GainNodes` with `exponentialRampToValueAtTime` to create smooth "pops" for merges and avoid audio clicks.
+* [x] **Envelope Control**: Use `GainNodes` with `exponentialRampToValueAtTime` to create smooth "pops" for merges and avoid audio clicks.
 
 ## Phase 3: The "Topic Not Covered" (WaveShaper & Scheduling)
 * [ ] **WaveShaperNode Implementation**:
