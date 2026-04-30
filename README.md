@@ -1,12 +1,12 @@
 # Implementation Checklist: Sonic 2048
 
 ## Phase 1: Core Infrastructure (The Foundation)
-* [ ] **Game Logic Integration**: Set up standard 2048 grid logic (4x4).
-* [ ] **Event Dispatcher**: Create a system where the game "broadcasts" events (e.g., `MOVE_START`, `TILE_MERGE`, `GAME_OVER`).
-* [ ] **State Tracking (The "History" Array)**: 
+* [x] **Game Logic Integration**: Set up standard 2048 grid logic (4x4).
+* [x] **Event Dispatcher**: Create a system where the game "broadcasts" events (e.g., `MOVE_START`, `TILE_MERGE`, `GAME_OVER`).
+* [x] **State Tracking (The "History" Array)**: 
     * Create a global `gameHistory` array.
     * Push an object for every move: `{moveDirection, tileValues, mergedValue, timestamp}`.
-* [ ] **WebAudio Boilerplate**: Initialize `AudioContext` and a Master Output chain with a `DynamicsCompressorNode` to prevent clipping during simultaneous merges.
+* [x] **WebAudio Boilerplate**: Initialize `AudioContext` and a Master Output chain with a `DynamicsCompressorNode` to prevent clipping during simultaneous merges.
 
 ## Phase 2: The Synthesis Engine (DSP & Class Concepts)
 * [x] **FM Synthesis Module (Primary Class Concept)**:
