@@ -9,6 +9,8 @@ body{font-family:system-ui,Arial;margin:0;background:var(--bg);color:var(--font)
 #app{width:360px}
 header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .controls{display:flex;gap:8px;align-items:center}
+ .playback{padding:6px 8px;border-radius:6px;background:#3b82f6;color:white;font-weight:600;font-size:13px}
+ .playback.off{background:#9ca3af}
 button{padding:8px 10px;border-radius:6px;border:0;background:#8f7a66;color:white;cursor:pointer}
 button:disabled{opacity:.6;cursor:not-allowed}
 .score{font-weight:600}

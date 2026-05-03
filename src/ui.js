@@ -8,6 +8,7 @@ const scoreEl = document.getElementById('score');
 const newBtn = document.getElementById('newGame');
 const toggleSynthBtn = document.getElementById('toggleSynth');
 const toggleAudioBtn = document.getElementById('toggleAudio');
+const playbackEl = document.getElementById('playbackIndicator');
 
 let audioEnabled = !!audio;
 if (!audioEnabled) {
@@ -15,8 +16,18 @@ if (!audioEnabled) {
   toggleSynthBtn.textContent = 'Synth Unavailable';
   toggleAudioBtn.disabled = true;
   toggleSynthBtn.disabled = true;
+  if (playbackEl) {
+    playbackEl.textContent = 'Playback: Unavailable';
+    playbackEl.classList.add('off');
+    playbackEl.setAttribute('aria-hidden', 'true');
+  }
 } else {
   toggleSynthBtn.textContent = `Synth: ${audio.getEngine().toUpperCase()}`;
+  if (playbackEl) {
+    playbackEl.textContent = 'Playback: Off';
+    playbackEl.classList.add('off');
+    playbackEl.setAttribute('aria-hidden', 'true');
+  }
 }
 
 function createGrid() {
@@ -79,6 +90,7 @@ newBtn.addEventListener('click', () => {
   game.reset();
   render();
   if (audio && audio.resume) audio.resume();
+  if (bannerEl) bannerEl.classList.add('hidden');
 });
 
 toggleAudioBtn.addEventListener('click', () => {
@@ -102,7 +114,40 @@ dispatcher.on('TILE_MERGE', (p) => {
   playMergeSound(p);
 });
 dispatcher.on('GAME_OVER', (p) => {
-  setTimeout(() => alert(`Game Over — score ${p.score}`), 50);
+  // play back the game history as a final score melody, indicate playback in UI
+  if (!playbackEl) {
+    setTimeout(() => alert(`Game Over — score ${p.score}`), 50);
+    return;
+  }
+  playbackEl.textContent = 'Playback: On';
+  playbackEl.classList.remove('off');
+  playbackEl.setAttribute('aria-hidden', 'false');
+
+  try {
+    if (audio && audio.startHistoryPlayback) {
+      const started = audio.startHistoryPlayback({ spacing: 0.14, onEnd: () => {
+        playbackEl.textContent = 'Playback: Off';
+        playbackEl.classList.add('off');
+        playbackEl.setAttribute('aria-hidden', 'true');
+        setTimeout(() => alert(`Game Over — score ${p.score}`), 50);
+      } });
+      if (!started) {
+        // nothing to play
+        playbackEl.textContent = 'Playback: Off';
+        playbackEl.classList.add('off');
+        playbackEl.setAttribute('aria-hidden', 'true');
+        setTimeout(() => alert(`Game Over — score ${p.score}`), 50);
+      }
+    } else {
+      setTimeout(() => alert(`Game Over — score ${p.score}`), 50);
+    }
+  } catch (e) {
+    console.warn('History playback error', e);
+    playbackEl.textContent = 'Playback: Off';
+    playbackEl.classList.add('off');
+    playbackEl.setAttribute('aria-hidden', 'true');
+    setTimeout(() => alert(`Game Over — score ${p.score}`), 50);
+  }
 });
 
 createGrid();
