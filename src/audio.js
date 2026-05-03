@@ -204,7 +204,7 @@ export function createAudioEngine(opts = {}) {
     const numeric = Number(value) || 2;
     const freq = valueToFreq(numeric);
     const duration = Math.min(0.9, 0.18 + (Math.log2(numeric || 2) * 0.02));
-    const distort = numeric >= (opts.distortThreshold || 64);
+    const distort = numeric >= (opts.distortThreshold || 32);
     if (engine === 'fm') playFMSynth(freq, time, duration, { distort, value: numeric });
     else playSubtractive(freq, time, duration, { distort, value: numeric });
   }
@@ -259,7 +259,7 @@ export function createAudioEngine(opts = {}) {
       const numeric = Number(value) || 2;
       const freq = valueToFreq(numeric);
       const now = ctx.currentTime + 0.005;
-      const distort = numeric >= (opts.distortThreshold || 64);
+      const distort = numeric >= (opts.distortThreshold || 32);
       if (engine === 'fm') playFMSynth(freq, now, undefined, { distort, value: numeric });
       else playSubtractive(freq, now, undefined, { distort, value: numeric });
     },
