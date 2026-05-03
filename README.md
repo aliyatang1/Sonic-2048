@@ -1,4 +1,5 @@
 # Implementation Checklist: Sonic 2048
+Aliya Tang and Siying Ding 
 
 ## Phase 1: Core Infrastructure (The Foundation)
 * [x] **Game Logic Integration**: Set up standard 2048 grid logic (4x4).
