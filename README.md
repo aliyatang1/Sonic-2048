@@ -20,18 +20,18 @@ Aliya Tang and Siying Ding
 * [x] **Envelope Control**: Use `GainNodes` with `exponentialRampToValueAtTime` to create smooth "pops" for merges and avoid audio clicks.
 
 ## Phase 3: The "Topic Not Covered" (WaveShaper & Scheduling)
-* [ ] **WaveShaperNode Implementation**:
+* [x] **WaveShaperNode Implementation**:
     * Design a distortion curve to add "grit" and character to specific sound boards.
     * Use this to differentiate the "texture" of high-value tiles.
-* [ ] **The Look-Ahead Scheduler**:
+* [x] **The Look-Ahead Scheduler**:
     * Implement a scheduling loop (the "Chris Wilson" method) using `setInterval` to check the `gameHistory`.
     * Use `AudioContext.currentTime` to schedule notes with sample-accurate precision for the final score playback.
 
 ## Phase 4: Automated Composition (The Final Score)
-* [ ] **The Mapping Logic**:
+* [x] **The Mapping Logic**:
     * Assign move directions to musical intervals (e.g., Up/Down = Pitch shifts, Left/Right = Rhythmic variations).
     * Map merge values to volume and duration.
-* [ ] **The "Recap" UI**:
+* [~] **The "Recap" UI**:
     * Create a playback mode that triggers at the end of the game.
     * Ensure the visual grid or UI "pulses" in sync with the audio playback using the scheduler.
 

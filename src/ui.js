@@ -9,6 +9,7 @@ const newBtn = document.getElementById('newGame');
 const toggleSynthBtn = document.getElementById('toggleSynth');
 const toggleAudioBtn = document.getElementById('toggleAudio');
 const playbackEl = document.getElementById('playbackIndicator');
+let recapPulseTimerId = null;
 
 let audioEnabled = !!audio;
 if (!audioEnabled) {
@@ -57,6 +58,26 @@ function render() {
   scoreEl.textContent = String(game.score);
 }
 
+function clearRecapPulse() {
+  if (recapPulseTimerId) {
+    clearTimeout(recapPulseTimerId);
+    recapPulseTimerId = null;
+  }
+  gridEl.dataset.recapDirection = '';
+  gridEl.classList.remove('recap-pulse');
+}
+
+function pulseRecap(direction, duration = 0.18) {
+  clearRecapPulse();
+  gridEl.dataset.recapDirection = direction || 'left';
+  gridEl.classList.add('recap-pulse');
+  recapPulseTimerId = window.setTimeout(() => {
+    gridEl.classList.remove('recap-pulse');
+    gridEl.dataset.recapDirection = '';
+    recapPulseTimerId = null;
+  }, Math.max(120, duration * 1000));
+}
+
 function playMergeSound(value) {
   if (!audio || !audioEnabled) return;
   try {
@@ -87,10 +108,16 @@ window.addEventListener('keydown', (e) => {
 });
 
 newBtn.addEventListener('click', () => {
+  if (audio && audio.stopHistoryPlayback) audio.stopHistoryPlayback();
+  clearRecapPulse();
+  if (playbackEl) {
+    playbackEl.textContent = 'Playback: Off';
+    playbackEl.classList.add('off');
+    playbackEl.setAttribute('aria-hidden', 'true');
+  }
   game.reset();
   render();
   if (audio && audio.resume) audio.resume();
-  if (bannerEl) bannerEl.classList.add('hidden');
 });
 
 toggleAudioBtn.addEventListener('click', () => {
@@ -125,24 +152,33 @@ dispatcher.on('GAME_OVER', (p) => {
 
   try {
     if (audio && audio.startHistoryPlayback) {
-      const started = audio.startHistoryPlayback({ spacing: 0.14, onEnd: () => {
-        playbackEl.textContent = 'Playback: Off';
-        playbackEl.classList.add('off');
-        playbackEl.setAttribute('aria-hidden', 'true');
-        setTimeout(() => alert(`Game Over — score ${p.score}`), 50);
-      } });
+      const started = audio.startHistoryPlayback({
+        onEnd: () => {
+          clearRecapPulse();
+          playbackEl.textContent = 'Playback: Off';
+          playbackEl.classList.add('off');
+          playbackEl.setAttribute('aria-hidden', 'true');
+          setTimeout(() => alert(`Game Over — score ${p.score}`), 50);
+        },
+        onNote: (note) => {
+          pulseRecap(note.direction, note.duration);
+        }
+      });
       if (!started) {
         // nothing to play
+        clearRecapPulse();
         playbackEl.textContent = 'Playback: Off';
         playbackEl.classList.add('off');
         playbackEl.setAttribute('aria-hidden', 'true');
         setTimeout(() => alert(`Game Over — score ${p.score}`), 50);
       }
     } else {
+      clearRecapPulse();
       setTimeout(() => alert(`Game Over — score ${p.score}`), 50);
     }
   } catch (e) {
     console.warn('History playback error', e);
+    clearRecapPulse();
     playbackEl.textContent = 'Playback: Off';
     playbackEl.classList.add('off');
     playbackEl.setAttribute('aria-hidden', 'true');

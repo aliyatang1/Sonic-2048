@@ -65,8 +65,8 @@ export class Game {
 
   move(direction) {
     this.dispatcher.emit('MOVE_START', { direction, grid: this.getGrid() });
-    const before = this.getFlat();
     let mergedTotal = 0;
+    const mergeEvents = [];
 
     const moveRow = (row) => {
       const nums = row.filter(v => v !== 0);
@@ -76,7 +76,9 @@ export class Game {
           const merged = nums[i] * 2;
           out.push(merged);
           mergedTotal += merged;
-          this.dispatcher.emit('TILE_MERGE', { from: nums[i], to: merged });
+          const mergeEvent = { from: nums[i], to: merged };
+          mergeEvents.push(mergeEvent);
+          this.dispatcher.emit('TILE_MERGE', mergeEvent);
           i++;
         } else {
           out.push(nums[i]);
@@ -121,6 +123,8 @@ export class Game {
       moveDirection: direction,
       tileValues: this.getFlat(),
       mergedValue: mergedTotal,
+      mergeEvents,
+      maxTile: Math.max(...this.grid),
       timestamp: Date.now()
     };
     gameHistory.push(entry);
