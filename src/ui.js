@@ -18,6 +18,7 @@ const recapCurrentMoveEl = document.getElementById('recapCurrentMove');
 const replayRecapBtn = document.getElementById('replayRecap');
 
 let recapPulseTimerId = null;
+let recapAutoplayTimerId = null;
 let recapState = {
   active: false,
   finalGrid: [],
@@ -101,6 +102,13 @@ function clearRecapPulse() {
   gridEl.classList.remove('recap-pulse');
 }
 
+function clearRecapAutoplay() {
+  if (recapAutoplayTimerId) {
+    clearTimeout(recapAutoplayTimerId);
+    recapAutoplayTimerId = null;
+  }
+}
+
 function pulseRecap(direction, duration = 0.18) {
   clearRecapPulse();
   gridEl.dataset.recapDirection = direction || 'left';
@@ -122,6 +130,7 @@ function getTopTile(flat) {
 }
 
 function hideRecapPanel() {
+  clearRecapAutoplay();
   recapState = {
     active: false,
     finalGrid: [],
@@ -159,6 +168,7 @@ function showRecapPanel({ score, history, finalGrid }) {
 
 function finishRecapPlayback() {
   recapState.playing = false;
+  clearRecapAutoplay();
   clearRecapPulse();
   updatePlaybackIndicator(false);
   if (recapStatusEl) {
@@ -172,6 +182,7 @@ function finishRecapPlayback() {
 }
 
 function startRecapPlayback() {
+  clearRecapAutoplay();
   if (!recapState.active || recapState.history.length === 0) return;
 
   if (audio && audio.stopHistoryPlayback) audio.stopHistoryPlayback();
@@ -248,6 +259,7 @@ window.addEventListener('keydown', (event) => {
 
 newBtn.addEventListener('click', () => {
   if (audio && audio.stopHistoryPlayback) audio.stopHistoryPlayback();
+  clearRecapAutoplay();
   clearRecapPulse();
   updatePlaybackIndicator(false);
   hideRecapPanel();
@@ -302,7 +314,11 @@ dispatcher.on('GAME_OVER', (payload) => {
   });
 
   try {
-    startRecapPlayback();
+    if (recapStatusEl) recapStatusEl.textContent = 'Locking in the final board, then starting the recap.';
+    recapAutoplayTimerId = window.setTimeout(() => {
+      recapAutoplayTimerId = null;
+      startRecapPlayback();
+    }, 180);
   } catch (error) {
     console.warn('History playback error', error);
     finishRecapPlayback();

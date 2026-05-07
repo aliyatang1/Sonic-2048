@@ -235,6 +235,14 @@ export function createAudioEngine(opts = {}) {
     const mergeCount = Array.isArray(entry.mergeEvents) ? entry.mergeEvents.length : entry.mergedValue > 0 ? 1 : 0;
     const directionInterval = DIRECTION_INTERVALS[direction] || 0;
     const rhythmBase = DIRECTION_RHYTHMS[direction] || 0.16;
+
+    // These mappings document the 2048 heuristics that drive the recap score:
+    // - Direction acts like monotonicity: vertical moves push interval color up/down,
+    //   while horizontal moves tighten or relax rhythmic spacing.
+    // - Larger merge totals act like board smoothness/payoff: they make notes longer,
+    //   louder, and brighter so "better" consolidations feel more resolved.
+    // - Multiple merges in one move add harmonic lift and distortion, mirroring the
+    //   increased local complexity of the board at that moment.
     const spacing = rhythmBase + Math.min(0.12, mergeCount * 0.018);
     const duration = Math.min(0.75, 0.16 + mergeWeight * 0.04 + (direction === 'right' ? 0.08 : 0) + (direction === 'left' ? -0.03 : 0));
     const amplitude = Math.min(0.19, 0.08 + mergeWeight * 0.012 + mergeCount * 0.008);

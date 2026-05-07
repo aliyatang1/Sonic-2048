@@ -36,6 +36,6 @@ Aliya Tang and Siying Ding
     * Ensure the visual grid or UI "pulses" in sync with the audio playback using the scheduler.
 
 ## Phase 5: Quality & Rubrics (The Grade)
-* [ ] **Modular Code**: Ensure audio logic is encapsulated in its own class or module to avoid "spaghetti code."
-* [ ] **Commenting**: Document the specific "Game Theory" heuristics (like Monotonicity or Smoothness) used to control audio parameters.
-* [ ] **Final Polish**: Check that the transition between "Game Mode" and "Playback Mode" is seamless.
+* [x] **Modular Code**: Ensure audio logic is encapsulated in its own class or module to avoid "spaghetti code."
+* [x] **Commenting**: Document the specific "Game Theory" heuristics (like Monotonicity or Smoothness) used to control audio parameters.
+* [x] **Final Polish**: Check that the transition between "Game Mode" and "Playback Mode" is seamless.
