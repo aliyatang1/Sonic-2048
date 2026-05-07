@@ -8,7 +8,7 @@
 body{font-family:system-ui,Arial;margin:0;background:var(--bg);color:var(--font);display:flex;align-items:center;justify-content:center;height:100vh}
 #app{width:360px}
 header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.controls{display:flex;gap:8px;align-items:center}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .playback{padding:6px 8px;border-radius:6px;background:#3b82f6;color:white;font-weight:600;font-size:13px;transition:transform .12s ease,background .12s ease,opacity .12s ease}
 .playback.off{background:#9ca3af}
 button{padding:8px 10px;border-radius:6px;border:0;background:#8f7a66;color:white;cursor:pointer}
@@ -22,6 +22,7 @@ button:disabled{opacity:.6;cursor:not-allowed}
 .grid.recap-pulse[data-recap-direction="right"]{transform:translateX(4px)}
 .cell{width:74px;height:74px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:22px;transition:transform .14s ease,filter .14s ease}
 .grid.recap-pulse .cell{transform:scale(1.03);filter:saturate(1.08)}
+.grid.recap-board .cell{box-shadow:inset 0 0 0 2px rgba(59,130,246,.12)}
 .cell.empty{background:var(--empty);color:#776e65}
 .cell.v2{background:#eee4da;color:#776e65}
 .cell.v4{background:#ede0c8;color:#776e65}
@@ -34,3 +35,14 @@ button:disabled{opacity:.6;cursor:not-allowed}
 .cell.v512{background:#edc850;color:#fff;font-size:18px}
 .cell.v1024{background:#edc53f;color:#fff;font-size:16px}
 .cell.v2048{background:#edc22e;color:#fff;font-size:16px}
+.recap-panel{margin-top:14px;padding:14px;border-radius:8px;background:#f1e8dc;display:grid;gap:10px}
+.recap-topline{display:flex;align-items:center;justify-content:space-between}
+.recap-topline h2{margin:0;font-size:18px}
+.recap-score{font-size:24px;font-weight:700;color:#8f5b33}
+.recap-status{margin:0;font-size:14px;line-height:1.4}
+.recap-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.recap-stat,.recap-current{padding:10px;border-radius:6px;background:rgba(255,255,255,.5)}
+.recap-current{display:grid;gap:4px}
+.recap-actions{display:flex;justify-content:flex-start}
+.label{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#8a7d72}
+.value{font-size:15px;font-weight:600}

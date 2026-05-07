@@ -8,11 +8,14 @@ export class Game {
     this.size = 4;
     this.grid = new Array(this.size * this.size).fill(0);
     this.score = 0;
+    this.isGameOver = false;
   }
 
   reset() {
     this.grid.fill(0);
     this.score = 0;
+    this.isGameOver = false;
+    gameHistory.length = 0;
     this.addRandomTile();
     this.addRandomTile();
     this.dispatcher.emit('GAME_RESET', { grid: this.getGrid() });
@@ -64,6 +67,11 @@ export class Game {
   }
 
   move(direction) {
+    if (this.isGameOver) {
+      this.dispatcher.emit('MOVE_IGNORED', { direction, reason: 'game-over' });
+      return false;
+    }
+
     this.dispatcher.emit('MOVE_START', { direction, grid: this.getGrid() });
     let mergedTotal = 0;
     const mergeEvents = [];
@@ -134,6 +142,7 @@ export class Game {
     this.addRandomTile();
 
     if (!this.canMove()) {
+      this.isGameOver = true;
       this.dispatcher.emit('GAME_OVER', { score: this.score, grid: this.getGrid() });
     }
     return true;

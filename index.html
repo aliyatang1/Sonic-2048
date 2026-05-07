@@ -21,6 +21,30 @@
 
       <main>
         <div id="grid" class="grid"></div>
+        <section id="recapPanel" class="recap-panel" aria-live="polite" hidden>
+          <div class="recap-topline">
+            <h2>Final Score</h2>
+            <div id="recapScore" class="recap-score">0</div>
+          </div>
+          <p id="recapStatus" class="recap-status">Playback is ready.</p>
+          <div class="recap-stats">
+            <div class="recap-stat">
+              <span class="label">Moves</span>
+              <span id="recapMoves" class="value">0</span>
+            </div>
+            <div class="recap-stat">
+              <span class="label">Top Tile</span>
+              <span id="recapTopTile" class="value">0</span>
+            </div>
+          </div>
+          <div class="recap-current">
+            <span class="label">Current Phrase</span>
+            <span id="recapCurrentMove" class="value">Waiting to replay.</span>
+          </div>
+          <div class="recap-actions">
+            <button id="replayRecap">Replay Score</button>
+          </div>
+        </section>
       </main>
     </div>
 

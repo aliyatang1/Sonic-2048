@@ -31,7 +31,7 @@ Aliya Tang and Siying Ding
 * [x] **The Mapping Logic**:
     * Assign move directions to musical intervals (e.g., Up/Down = Pitch shifts, Left/Right = Rhythmic variations).
     * Map merge values to volume and duration.
-* [~] **The "Recap" UI**:
+* [x] **The "Recap" UI**:
     * Create a playback mode that triggers at the end of the game.
     * Ensure the visual grid or UI "pulses" in sync with the audio playback using the scheduler.
 

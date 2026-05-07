@@ -34,6 +34,7 @@ export function createAudioEngine(opts = {}) {
   compressor.connect(ctx.destination);
 
   let engine = opts.engine || DEFAULT_ENGINE;
+  let muted = !!opts.muted;
   const gameHistory = Array.isArray(opts.gameHistory) ? opts.gameHistory : null;
 
   function makeDistortionCurve(amount = 20, samples = 2048) {
@@ -258,6 +259,7 @@ export function createAudioEngine(opts = {}) {
   }
 
   function schedulePlaybackNote(note, time) {
+    if (muted) return;
     if (engine === 'fm') playFMSynth(note.freq, time, note.duration, note);
     else playSubtractive(note.freq, time, note.duration, note);
   }
@@ -266,11 +268,7 @@ export function createAudioEngine(opts = {}) {
     if (typeof callback !== 'function') return;
     const delayMs = Math.max(0, (time - ctx.currentTime) * 1000);
     const timerId = window.setTimeout(() => {
-      callback({
-        direction: note.direction,
-        duration: note.duration,
-        value: note.value
-      });
+      callback(note);
       scheduler.onNoteTimers = scheduler.onNoteTimers.filter((id) => id !== timerId);
     }, delayMs);
     scheduler.onNoteTimers.push(timerId);
@@ -279,12 +277,13 @@ export function createAudioEngine(opts = {}) {
   function startHistoryPlayback(options = {}) {
     const onEnd = typeof options.onEnd === 'function' ? options.onEnd : null;
     const onNote = typeof options.onNote === 'function' ? options.onNote : null;
+    const history = Array.isArray(options.history) && options.history.length > 0 ? options.history : gameHistory;
 
-    if (!gameHistory || gameHistory.length === 0) return false;
+    if (!history || history.length === 0) return false;
     if (scheduler.isPlaying) return true;
 
     clearPlaybackTimers();
-    scheduler.queue = gameHistory.slice();
+    scheduler.queue = history.slice();
     scheduler.nextIndex = 0;
     scheduler.isPlaying = true;
     scheduler.nextTime = ctx.currentTime + 0.08;
@@ -297,7 +296,16 @@ export function createAudioEngine(opts = {}) {
         const noteTime = scheduler.nextTime;
 
         schedulePlaybackNote(note, noteTime);
-        emitScheduledNote(note, noteTime, onNote);
+        emitScheduledNote(
+          {
+            ...note,
+            entry,
+            index: scheduler.nextIndex,
+            total: scheduler.queue.length
+          },
+          noteTime,
+          onNote
+        );
 
         scheduler.nextTime += note.spacing;
         scheduler.nextIndex++;
@@ -358,6 +366,14 @@ export function createAudioEngine(opts = {}) {
 
     getEngine() {
       return engine;
+    },
+
+    setMuted(value) {
+      muted = !!value;
+    },
+
+    isMuted() {
+      return muted;
     },
 
     async resume() {
