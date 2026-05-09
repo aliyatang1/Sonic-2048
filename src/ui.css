@@ -8,6 +8,10 @@
 body{font-family:system-ui,Arial;margin:0;background:var(--bg);color:var(--font);display:flex;align-items:center;justify-content:center;height:100vh}
 #app{width:360px}
 header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+h1{margin:0}
+.site-nav{margin-top:4px}
+.site-nav a{color:#8f7a66;font-size:14px;font-weight:700;text-decoration:none}
+.site-nav a:hover{text-decoration:underline}
 .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .playback{padding:6px 8px;border-radius:6px;background:#3b82f6;color:white;font-weight:600;font-size:13px;transition:transform .12s ease,background .12s ease,opacity .12s ease}
 .playback.off{background:#9ca3af}
@@ -46,3 +50,8 @@ button:disabled{opacity:.6;cursor:not-allowed}
 .recap-actions{display:flex;justify-content:flex-start}
 .label{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#8a7d72}
 .value{font-size:15px;font-weight:600}
+.blog-page{display:block;height:auto;min-height:100vh;padding:32px 18px}
+.blog-app{width:min(760px,100%);margin:0 auto}
+.blog-app header{border-bottom:2px solid #e2d6c8;padding-bottom:16px}
+.blog-post{font-size:17px;line-height:1.7}
+.blog-post p{margin:0 0 20px}

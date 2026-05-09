@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sonic 2048 Blog</title>
+    <link rel="stylesheet" href="./src/ui.css">
+  </head>
+  <body class="blog-page">
+    <div id="app" class="blog-app">
+      <header>
+        <div>
+          <h1>Sonic 2048</h1>
+          <nav class="site-nav" aria-label="Site navigation">
+            <a href="./index.html">Game</a>
+          </nav>
+        </div>
+      </header>
+
+      <main>
+        <article class="blog-post">
+          <p>
+            For our project, we built Sonic 2048, an audio-driven reinterpretation of the classic 2048 game. Instead of treating sound as a decorative effect added on top of gameplay, we designed the game so that each move contributes to an evolving generative composition. Every tile value is associated with a distinct sonic identity, and every merge becomes a musical event. As the board changes, the player is not only solving a puzzle but also shaping a piece of music through their decisions.
+          </p>
+
+          <p>
+            Our main design goal was to connect the logic of 2048 to meaningful sound parameters. In the original game, two matching tiles merge into a higher-value tile. In Sonic 2048, that same action triggers a synthesized sound whose character depends on the resulting tile value. Lower tiles produce simpler, more stable tones, while higher tiles introduce greater harmonic complexity. This allowed us to map the mathematical growth of the game, from 2 up to 2048, onto an increasingly rich musical texture.
+          </p>
+
+          <p>
+            Rather than relying on static audio samples, we implemented a custom synthesis engine using the WebAudio API. FM synthesis became a central part of our sound design because it gave us a flexible way to scale timbre with tile value. As tiles increase, parameters such as modulation index and harmonic ratio can be adjusted to create brighter, denser, or more unstable sounds. This made the board feel sonically alive: a merge into 4 sounds modest, while a merge into 1024 feels more intense and complex.
+          </p>
+
+          <p>
+            We also designed the audio system to be modular. Gain nodes handle dynamic volume control, while additional processing nodes shape the overall character of the sound. One feature we explored beyond the class material was the WaveShaperNode, which we used to add distortion and alter the texture of certain synthesis modes. This gave us a way to make the game's sound palette feel less static and more expressive.
+          </p>
+
+          <p>
+            Another important feature is the game-history playback system. At the end of a game, the player can listen back to a musical recap generated from their moves. In this playback, moves become notes, merges influence rhythm and amplitude, and the full sequence becomes a kind of score. This transforms the game from a puzzle with sound effects into a system for composing through play.
+          </p>
+
+          <p>
+            We also included a sound board that lets players switch between different synthesis styles, such as FM and subtractive synthesis. This gives the player control over the "instrument" used to perform their game. The same sequence of moves can feel very different depending on the synthesis mode, which reinforces one of the central ideas of the project: gameplay data can become musical structure, but sound design determines how that structure is perceived.
+          </p>
+
+          <p>
+            Overall, Sonic 2048 explores the relationship between interaction, computation, and sound. The project uses the familiar mechanics of 2048 as a framework for generative music, where each player's strategy produces a unique sonic result. We are proud of how the implementation connects game logic directly to synthesis parameters, making the audio feel integrated rather than incidental.
+          </p>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>
