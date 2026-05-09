@@ -55,3 +55,6 @@ button:disabled{opacity:.6;cursor:not-allowed}
 .blog-app header{border-bottom:2px solid #e2d6c8;padding-bottom:16px}
 .blog-post{font-size:17px;line-height:1.7}
 .blog-post p{margin:0 0 20px}
+.blog-post code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:.92em;color:#5f4a3c}
+.blog-post pre{margin:0 0 22px;padding:16px;overflow:auto;border-radius:8px;background:#2f2a24;color:#f8efe6;font-size:14px;line-height:1.5}
+.blog-post pre code{color:inherit;font-size:inherit}
