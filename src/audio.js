@@ -85,7 +85,8 @@ export function createAudioEngine(opts = {}) {
     const numeric = Math.max(2, Number(value) || 2);
     const tileStep = Math.max(0, Math.log2(numeric / 2));
     const octave = Math.floor(tileStep / SCALE_SEMITONES.length);
-    const semitone = SCALE_SEMITONES[tileStep % SCALE_SEMITONES.length] + octave * 12 + semitoneOffset;
+    const lowTileLift = numeric <= 8 ? 5 : numeric <= 16 ? 2 : 0;
+    const semitone = SCALE_SEMITONES[tileStep % SCALE_SEMITONES.length] + octave * 10 + semitoneOffset + lowTileLift;
     return BASE_FREQUENCY * Math.pow(2, semitone / 12);
   }
 
@@ -141,7 +142,7 @@ export function createAudioEngine(opts = {}) {
     modOsc2.start(when);
     carrier.start(when);
 
-    const stopTime = when + duration + env.releaseTime + 0.05;
+    const stopTime = when + duration + env.releaseTime + 0.3;
     releaseADSR(outGain, when + duration, env.releaseTime);
     carrier.stop(stopTime);
     modOsc.stop(stopTime);
@@ -195,7 +196,7 @@ export function createAudioEngine(opts = {}) {
     oscB.start(when);
     oscC.start(when);
 
-    const stopTime = when + duration + env.releaseTime + 0.05;
+    const stopTime = when + duration + env.releaseTime + 0.3;
     releaseADSR(mixGain, when + duration, env.releaseTime);
     oscA.stop(stopTime);
     oscB.stop(stopTime);
@@ -245,7 +246,7 @@ export function createAudioEngine(opts = {}) {
     //   increased local complexity of the board at that moment.
     const spacing = rhythmBase + Math.min(0.12, mergeCount * 0.018);
     const duration = Math.min(0.75, 0.16 + mergeWeight * 0.04 + (direction === 'right' ? 0.08 : 0) + (direction === 'left' ? -0.03 : 0));
-    const amplitude = Math.min(0.19, 0.08 + mergeWeight * 0.012 + mergeCount * 0.008);
+    const amplitude = Math.min(0.15, 0.08 + mergeWeight * 0.012 + mergeCount * 0.008);
     const brightness = Math.min(1.1, 0.22 + mergeWeight * 0.11);
     const harmonicLift = Math.min(1.25, mergeCount * 0.22 + (direction === 'up' ? 0.18 : 0));
     const distort = representativeValue >= (opts.distortThreshold || 32);
@@ -353,11 +354,9 @@ export function createAudioEngine(opts = {}) {
         : valueOrPayload;
       const numeric = Math.max(2, Number(value) || 2);
       // Compute amplitude with extra boost for very low tiles so 2/4/8/16 are more audible
-      let amplitude = Math.min(0.18, 0.12 + Math.log2(numeric) * 0.01);
-      if (numeric <= 8) {
-        amplitude = Math.min(0.22, amplitude + 0.06);
-      } else if (numeric <= 16) {
-        amplitude = Math.min(0.20, amplitude + 0.03);
+      let amplitude = Math.min(0.15, 0.12 + Math.log2(numeric) * 0.01);
+      if (numeric <= 16) {
+        amplitude = Math.min(0.22, amplitude + 0.03);
       }
 
       const note = {
