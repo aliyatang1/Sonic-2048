@@ -24,7 +24,7 @@ export function createAudioEngine(opts = {}) {
   const ctx = new AudioCtx();
   const masterGain = ctx.createGain();
   const compressor = ctx.createDynamicsCompressor();
-  masterGain.gain.value = typeof opts.masterGain === 'number' ? opts.masterGain : 0.07;
+  masterGain.gain.value = typeof opts.masterGain === 'number' ? opts.masterGain : 0.12;
   compressor.threshold.value = -24;
   compressor.knee.value = 18;
   compressor.ratio.value = 10;
@@ -352,8 +352,16 @@ export function createAudioEngine(opts = {}) {
         ? valueOrPayload.value || valueOrPayload.to || valueOrPayload.from || 2
         : valueOrPayload;
       const numeric = Math.max(2, Number(value) || 2);
+      // Compute amplitude with extra boost for very low tiles so 2/4/8/16 are more audible
+      let amplitude = Math.min(0.18, 0.12 + Math.log2(numeric) * 0.01);
+      if (numeric <= 8) {
+        amplitude = Math.min(0.22, amplitude + 0.06);
+      } else if (numeric <= 16) {
+        amplitude = Math.min(0.20, amplitude + 0.03);
+      }
+
       const note = {
-        amplitude: Math.min(0.17, 0.075 + Math.log2(numeric) * 0.008),
+        amplitude,
         brightness: Math.min(1, 0.25 + Math.log2(numeric) * 0.05),
         direction: 'merge',
         distort: numeric >= (opts.distortThreshold || 32),
